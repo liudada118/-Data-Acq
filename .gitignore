@@ -1,0 +1,31 @@
+.venv/
+.runtime/
+.tools/
+build/
+native/build/
+frontend/node_modules/
+frontend/dist/
+data/
+__pycache__/
+*.py[cod]
+.DS_Store
+
+# Local dependencies and generated files in all subprojects
+node_modules/
+dist/
+release/
+*.tsbuildinfo
+*.independent-cards-backup
+
+# Local credentials, SDK import scratch files and device logs
+.env
+.env.*
+!.env.example
+!.env.template
+*.pem
+*.key
+*.pfx
+*.p12
+*.log
+Log/
+.tmp-sdk-docs/

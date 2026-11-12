@@ -1,0 +1,38 @@
+{
+  "name": "synapse-node-acquisition",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "electron/main.mjs",
+  "author": "Shroom",
+  "description": "Node.js multimodal acquisition prototype with replaceable SDK adapters",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env.local src/server.mjs",
+    "start:annotations": "node --env-file-if-exists=.env.local scripts/start-annotations.mjs",
+    "dev": "node --env-file-if-exists=.env.local --watch src/server.mjs",
+    "setup": "npm ci && npm --prefix ui ci && npm run build",
+    "build": "npm --prefix ui run build",
+    "ui": "npm --prefix ui run dev",
+    "test": "node --test test/*.test.mjs",
+    "desktop": "node scripts/start-desktop.mjs",
+    "desktop:build": "npm run build && npm run desktop",
+    "desktop:pack": "npm run build && electron-builder --config electron-builder.cjs --win --x64 --dir",
+    "desktop:dist": "npm run build && electron-builder --config electron-builder.cjs --win --x64"
+  },
+  "dependencies": {
+    "archiver": "7.0.1",
+    "ffmpeg-static": "5.3.0",
+    "koffi": "3.3.7",
+    "mammoth": "1.13.0",
+    "pdfjs-dist": "6.5.438",
+    "shroom-sdk": "0.4.0",
+    "yauzl": "3.4.0"
+  },
+  "devDependencies": {
+    "electron": "45.2.3",
+    "electron-builder": "26.18.0"
+  }
+}

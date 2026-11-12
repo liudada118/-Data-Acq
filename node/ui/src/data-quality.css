@@ -1,0 +1,88 @@
+/* Read-only acquisition diagnostics and explicit handling of incomplete data. */
+.pressure-range-controls {
+  display:flex; align-items:center; flex-wrap:wrap; gap:5px 8px; margin:0 0 0 auto;
+  min-width:0; color:#496345; font-size:11px;
+}
+.pressure-range-controls label { display:inline-flex; align-items:center; gap:5px; min-width:0; }
+.pressure-range-controls select,.pressure-range-controls input {
+  height:30px; min-width:0; padding:3px 6px; border:1px solid #c9d8c0;
+  border-radius:4px; background:#fff; color:#304b31; font:inherit;
+}
+.pressure-range-controls select { max-width:132px; }
+.pressure-range-controls input { width:77px; font-variant-numeric:tabular-nums; }
+.pressure-range-controls button {
+  min-height:30px; padding:4px 8px; border:1px solid #c9d8c0; background:#fff; color:#365b3c;
+}
+.pressure-range-controls select:focus-visible,.pressure-range-controls input:focus-visible,
+.pressure-range-controls button:focus-visible { outline:2px solid #287859; outline-offset:2px; }
+.pressure-range-error { flex-basis:100%; flex-shrink:0; margin:0; padding:5px 8px; color:#9b352b; font-size:11px; line-height:1.5; overflow-wrap:anywhere; }
+.pressure-color-scale {
+  display:flex; align-items:center; flex-wrap:wrap; flex-shrink:0; gap:4px 7px; min-height:25px;
+  padding:4px 10px; border-bottom:1px solid #e1e8da; background:#fbfcf8;
+  color:#4e6348; font-size:11px; line-height:1.5; font-variant-numeric:tabular-nums;
+}
+.pressure-color-gradient {
+  display:inline-block; flex:0 0 58px; height:6px; border-radius:3px;
+  background:linear-gradient(90deg,rgb(16,49,45),rgb(35,108,81),rgb(108,171,98),rgb(221,213,111),rgb(249,163,94),rgb(211,76,64));
+}
+.pressure-range-help { color:#5d6b53; }
+.pressure-range-warning { flex-shrink:0; margin:0; padding:5px 8px; color:#8b4a1e; background:#fff6e5; font-size:11px; line-height:1.5; font-weight:600; overflow-wrap:anywhere; }
+.sdk-receive-health {
+  display:flex; align-items:center; flex-shrink:0; flex-wrap:wrap; gap:3px 9px; min-height:27px;
+  padding:4px 8px; border-top:1px solid #dfe7d8; background:#f7faf3;
+  color:#4f6546; font-size:11px; line-height:1.5; font-variant-numeric:tabular-nums;
+}
+.sdk-health-state { font-weight:600; }
+.sdk-health-state::before { content:""; display:inline-block; width:6px; height:6px; margin-right:5px; border-radius:50%; background:#7f8d75; vertical-align:middle; }
+.sdk-receive-health[data-health="normal"] .sdk-health-state::before { background:#32815b; }
+.sdk-receive-health[data-health="waiting"],.sdk-receive-health[data-health="observing"],
+.sdk-receive-health[data-health="unknown"] { background:#faf7ed; color:#715724; border-color:#e4dbc0; }
+.sdk-receive-health[data-health="interrupted"],.sdk-receive-health[data-health="error"] { background:#fff1e9; color:#963d2b; border-color:#e5c0ae; }
+.sdk-receive-health[data-health="interrupted"] .sdk-health-state::before,
+.sdk-receive-health[data-health="error"] .sdk-health-state::before { background:#b34c3a; }
+.sdk-health-age,.sdk-health-rate { white-space:nowrap; }
+.recovery-check-panel { display:flex; flex-direction:column; gap:14px; min-width:0; padding:16px 23px 0; }
+.modal:has(>.recovery-check-panel) .modal-header { position:sticky; top:0; z-index:2; background:#fff; }
+.recovery-warning {
+  margin:0; padding:12px 14px; border:1px solid #e5c59e; border-radius:6px;
+  background:#fff8ea; color:#795020; font-size:12px; line-height:1.7; overflow-wrap:anywhere;
+}
+.recovery-warning p { margin:0; }
+.recovery-warning p+p { margin-top:6px; }
+ul.recovery-warning { padding-left:30px; }
+ul.recovery-warning li+li { margin-top:5px; }
+.recovery-summary { display:flex; flex-wrap:wrap; align-items:center; gap:6px 16px; color:#45623d; font-size:12px; line-height:1.7; }
+.recovery-summary strong { font-variant-numeric:tabular-nums; }
+.recovery-streams { max-width:100%; min-width:0; overflow:auto; border:1px solid #dce5d7; border-radius:6px; }
+.recovery-streams table { width:100%; border-collapse:collapse; font-size:12px; text-align:left; }
+.recovery-streams th,.recovery-streams td { padding:9px 11px; border-bottom:1px solid #e8ede3; vertical-align:top; line-height:1.6; }
+.recovery-streams th { color:#506348; background:#f5f8f0; font-weight:600; white-space:nowrap; }
+.recovery-streams td { color:#465b40; overflow-wrap:anywhere; }
+.recovery-streams tr:last-child td { border-bottom:0; }
+.recovery-actions { display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:9px; }
+.recovery-actions .button { min-height:35px; white-space:normal; }
+.recovery-actions .recovery-format { flex:1 1 180px; }
+.recovery-actions .recovery-format select { height:34px; min-width:0; padding:4px 8px; color:#365333; border:1px solid #c9d8c0; border-radius:5px; background:#fff; }
+.recovery-confirmation { display:flex; align-items:flex-start; gap:9px; padding:10px 0; color:#5e4c31; font-size:12px; line-height:1.7; cursor:pointer; }
+.recovery-actions .recovery-confirmation { flex:1 1 100%; }
+.recovery-confirmation input { flex-shrink:0; width:16px; height:16px; margin-top:3px; accent-color:#287859; }
+.recovery-badge,.recovery-package-badge { display:inline-flex; align-items:center; gap:5px; padding:3px 7px; border:1px solid #e5c59e; border-radius:4px; background:#fff6e6; color:#8a4e1d; font-size:11px; font-weight:600; }
+.acquisition-mode .monitor-workspace .pressure-range-controls { gap:3px 5px; }
+.acquisition-mode .monitor-workspace .pressure-range-controls select,
+.acquisition-mode .monitor-workspace .pressure-range-controls input { height:27px; }
+.acquisition-mode .monitor-workspace .pressure-range-controls button { min-height:27px; padding:3px 7px; }
+.acquisition-mode .monitor-workspace .pressure-color-scale { min-height:23px; padding:3px 8px; font-size:10px; }
+@media(max-width:640px) {
+  .toast { left:74px; right:14px; transform:none; width:auto; max-width:none; gap:8px; line-height:1.7; }
+  .toast>span,.toast .icon-button { flex-shrink:0; }
+  .toast .icon-button { margin-left:0; }
+  .pressure-range-controls { flex-basis:100%; margin-left:0; padding-top:3px; }
+  .pressure-range-controls input { width:84px; }
+  .pressure-color-scale { font-size:11px; }
+  .sdk-receive-health { gap:3px 7px; }
+  .recovery-warning { padding:10px 11px; }
+  ul.recovery-warning { padding-left:27px; }
+  .recovery-check-panel { padding:12px 14px 0; }
+  .recovery-actions { justify-content:stretch; }
+  .recovery-actions .button { flex:1 1 130px; }
+}

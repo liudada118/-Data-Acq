@@ -1,0 +1,147 @@
+/* Audio and video share a bounded rail. All dimensions include the separators;
+   resizing redistributes this viewport instead of growing the board. */
+.media-sensor-layout.independent-card-layout.bounded-board-layout {
+  display:grid; flex:1 1 0; min-width:0; min-height:0; height:0;
+  grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr);
+  align-content:stretch; align-items:stretch; gap:0; overflow:hidden; scrollbar-gutter:auto;
+}
+.media-sensor-layout.independent-card-layout.bounded-board-layout.has-media-rail.has-sensor-grid:not(.media-stacked):not(.media-is-focused):not(.sensor-is-focused) {
+  grid-template-columns:var(--media-rail-width,38%) 12px minmax(0,1fr); gap:0;
+}
+.media-sensor-layout.independent-card-layout.bounded-board-layout>.media-resize-width {
+  display:block; width:12px; min-width:12px; min-height:0; height:100%;
+}
+.media-sensor-layout.independent-card-layout.bounded-board-layout>.media-rail {
+  display:flex; flex-flow:column nowrap; align-items:stretch; justify-content:flex-start;
+  gap:var(--media-card-gap,8px); min-width:0; min-height:0; height:100%; overflow:hidden; scrollbar-gutter:auto;
+}
+.media-sensor-layout.independent-card-layout.bounded-board-layout>.media-rail>.media-resize-height {
+  display:block; flex:0 0 var(--media-separator-height,12px); min-width:0; width:100%;
+  min-height:var(--media-separator-height,12px); height:var(--media-separator-height,12px);
+  text-align:center; color:#51735a; background:#e6eee2; font-size:10px; line-height:var(--media-separator-height,12px);
+}
+.bounded-board-layout .media-resize-height::after { display:none; }
+.bounded-board-layout .media-resize-height>span { display:block; pointer-events:none; white-space:nowrap; }
+/* Paging controls appearing during width drags must not change the board height. */
+.replay-workspace .replay-pagination { min-height:32px; padding-top:4px; }
+
+/* Media have a shared width and complementary fixed heights from the layout
+   hook. Settings remain overlays and cannot enlarge either card. */
+.acquisition-mode .monitor-workspace .media-sensor-layout.bounded-board-layout .workspace-sensor-card.bounded-media-card,
+.replay-workspace .media-sensor-layout.bounded-board-layout .replay-stream-card.bounded-media-card {
+  display:flex; flex-direction:column; flex:0 0 auto; align-self:stretch;
+  box-sizing:border-box; width:100%; height:auto; min-width:0; min-height:0;
+  max-width:100%; max-height:100%; padding:0; overflow:hidden;
+}
+.acquisition-mode .monitor-workspace .bounded-board-layout>.media-rail>.bounded-media-card .workspace-visual {
+  position:relative; inset:auto; flex:1 1 0; width:100%; height:0; min-height:0; overflow:hidden;
+}
+.acquisition-mode .monitor-workspace .bounded-board-layout>.media-rail>.bounded-media-card .workspace-config-panel {
+  top:43px; right:5px; left:5px; max-height:max(0px,calc(100% - 48px));
+  overflow:auto; overscroll-behavior:contain; scrollbar-width:thin;
+}
+/* The short microphone tile keeps just its connection row. Guidance opens in
+   a native dialog; it never competes with the waveform for vertical space. */
+.acquisition-mode .monitor-workspace .bounded-board-layout>.media-rail>.media-audio-card .microphone-compact-config {
+  max-width:none; max-height:none; overflow:visible;
+}
+.acquisition-mode .monitor-workspace .media-audio-card .workspace-microphone-connection {
+  display:grid; grid-template-columns:minmax(0,1fr) auto auto;
+  align-items:center; gap:6px; padding:7px; border:0;
+}
+.acquisition-mode .monitor-workspace .media-audio-card .workspace-microphone-device {
+  min-width:0; width:100%; margin:0;
+}
+.acquisition-mode .monitor-workspace .media-audio-card .workspace-microphone-device select {
+  min-width:0; width:100%; height:34px; padding:0 8px;
+}
+.acquisition-mode .monitor-workspace .media-audio-card .workspace-microphone-connection>.button {
+  min-width:0; height:34px; min-height:34px; padding:5px 8px; white-space:nowrap;
+}
+.acquisition-mode .monitor-workspace .media-audio-card .microphone-compact-error {
+  align-items:center; max-height:none; overflow:visible; padding:2px 7px; line-height:20px; font-size:11px;
+}
+.microphone-compact-error>button {
+  border:0; background:none; color:inherit; padding:0; font:inherit; text-align:left; cursor:pointer;
+}
+.microphone-compact-error>button:hover { text-decoration:underline; }
+.acquisition-mode .monitor-workspace .media-audio-card .workspace-card-placeholder {
+  flex-direction:row; gap:7px; min-height:0; padding:4px 8px; overflow:clip;
+}
+.acquisition-mode .monitor-workspace .media-audio-card .workspace-card-placeholder>svg {
+  width:20px; height:20px; flex-shrink:0; margin:0;
+}
+.acquisition-mode .monitor-workspace .media-audio-card .workspace-card-placeholder>h4 {
+  margin:0; font-size:11px; line-height:20px;
+}
+.microphone-dialog { width:min(520px,calc(100vw - 32px)); }
+.microphone-dialog-body { padding:16px 20px; font-size:13px; line-height:1.7; }
+.microphone-help-steps { padding-left:20px; margin:0; }
+.microphone-help-steps>li+li { margin-top:10px; }
+.microphone-help-format { margin:14px 0 0; color:#65765e; font-size:12px; }
+.microphone-dialog-error { padding:9px 12px; margin:0 0 14px; color:#943b30; background:#fff0e9; border-radius:6px; overflow-wrap:anywhere; }
+@container (max-width:420px) {
+  .acquisition-mode .monitor-workspace .media-audio-card .workspace-microphone-connection>.button[aria-label="检测并授权麦克风"]>span,
+  .acquisition-mode .monitor-workspace .media-audio-card .workspace-card-heading>.workspace-settings-toggle>span { display:none; }
+  .acquisition-mode .monitor-workspace .media-audio-card .workspace-card-heading { gap:4px; }
+  .acquisition-mode .monitor-workspace .media-audio-card .workspace-card-heading>.icon-button,
+  .acquisition-mode .monitor-workspace .media-audio-card .workspace-card-heading>.workspace-settings-toggle {
+    width:28px; height:30px; min-height:30px; padding:0;
+  }
+  .acquisition-mode .monitor-workspace .media-audio-card .workspace-card-title { gap:4px; }
+  .acquisition-mode .monitor-workspace .media-audio-card .workspace-card-state>span:not(.status-dot) { display:none; }
+}
+.replay-workspace .bounded-board-layout>.media-rail>.bounded-media-card .replay-audio-content {
+  min-width:0; min-height:0; overflow:auto; overscroll-behavior:contain;
+}
+
+/* Sensors reserve explicit grid rows when their height grows. Packing moves
+   neighbours into free cells or later pages without increasing board height. */
+.acquisition-mode .monitor-workspace .media-sensor-layout.independent-card-layout.bounded-board-layout>.workspace-card-grid {
+  display:grid; grid-template-columns:repeat(var(--monitor-columns,1),minmax(0,1fr));
+  grid-template-rows:repeat(var(--monitor-rows,1),minmax(0,1fr));
+}
+.replay-workspace .media-sensor-layout.independent-card-layout.bounded-board-layout>.replay-stream-grid {
+  display:grid; grid-template-columns:repeat(var(--replay-columns,1),minmax(0,1fr));
+  grid-template-rows:repeat(var(--replay-rows,1),minmax(0,1fr));
+}
+.acquisition-mode .monitor-workspace .media-sensor-layout.independent-card-layout.bounded-board-layout>.workspace-card-grid,
+.replay-workspace .media-sensor-layout.independent-card-layout.bounded-board-layout>.replay-stream-grid {
+  flex:none; min-width:0; min-height:0; width:100%; height:100%; gap:10px;
+  align-content:stretch; align-items:start; justify-content:stretch; justify-items:start;
+  overflow:hidden; scrollbar-gutter:auto;
+}
+.acquisition-mode .monitor-workspace .media-sensor-layout.independent-card-layout.bounded-board-layout>.workspace-card-grid.layout-stack {
+  grid-template-columns:minmax(0,1fr);
+}
+.acquisition-mode .monitor-workspace .media-sensor-layout.bounded-board-layout>.workspace-card-grid>.workspace-sensor-card.independent-card,
+.replay-workspace .media-sensor-layout.bounded-board-layout>.replay-stream-grid>.replay-stream-card.independent-card {
+  min-width:0; min-height:0; max-width:100%; max-height:100%;
+}
+.acquisition-mode .monitor-workspace .bounded-board-layout>.workspace-card-grid>.independent-card .workspace-config-panel {
+  max-height:max(0px,calc(100% - 96px)); overflow:auto; overscroll-behavior:contain;
+}
+
+/* A narrow board still consumes exactly one viewport. These two pixel budgets
+   are calculated from the same available height as the media-card heights. */
+.media-sensor-layout.independent-card-layout.bounded-board-layout.media-stacked.has-media-rail.has-sensor-grid:not(.media-is-focused):not(.sensor-is-focused) {
+  grid-template-columns:minmax(0,1fr);
+  grid-template-rows:var(--media-rail-height,minmax(0,.56fr)) var(--sensor-region-height,minmax(0,.44fr));
+  gap:10px; align-content:stretch; overflow:hidden; scrollbar-gutter:auto;
+}
+.media-sensor-layout.independent-card-layout.bounded-board-layout.media-stacked>.media-resize-width {
+  display:none;
+}
+
+/* Focus reuses the same parent and restores the full board budget. */
+.media-sensor-layout.independent-card-layout.bounded-board-layout:is(.media-is-focused,.sensor-is-focused),
+.media-sensor-layout.independent-card-layout.bounded-board-layout.has-media-rail.has-sensor-grid:is(.media-is-focused,.sensor-is-focused),
+.media-sensor-layout.independent-card-layout.bounded-board-layout.media-stacked.has-media-rail.has-sensor-grid:is(.media-is-focused,.sensor-is-focused) {
+  grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr); gap:0; overflow:hidden;
+}
+.media-sensor-layout.independent-card-layout.bounded-board-layout:is(.media-is-focused,.sensor-is-focused)>.media-resize-width {
+  display:none;
+}
+.acquisition-mode .monitor-workspace .bounded-board-layout.sensor-is-focused>.workspace-card-grid>.independent-card .workspace-config-panel {
+  max-height:max(0px,calc(100% - 56px));
+}

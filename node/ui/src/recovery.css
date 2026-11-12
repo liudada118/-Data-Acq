@@ -1,0 +1,15 @@
+.app-recovery {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #f4f5f1;
+  color: #283d34;
+  font-family: Inter, "Microsoft YaHei", sans-serif;
+}
+.app-recovery-card { width: min(100%, 480px); padding: 32px; border: 1px solid #d8dfd7; border-radius: 16px; background: #fff; }
+.app-recovery-brand { font-size: 12px; letter-spacing: .1em; color: #617368; }
+.app-recovery h1 { margin: 20px 0 12px; font-size: 24px; }
+.app-recovery p { line-height: 1.7; }
+.app-recovery button { margin-top: 16px; padding: 12px 18px; border: 0; border-radius: 8px; background: #254f3c; color: #fff; cursor: pointer; font: inherit; }
+.app-recovery button:focus-visible { outline: 3px solid #72ac8c; outline-offset: 4px; }

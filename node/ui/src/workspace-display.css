@@ -1,0 +1,160 @@
+/* The monitor has one viewport budget. Configuration opens over a card rather
+   than shrinking every feed; acquisition ownership stays in the parent hooks. */
+.acquisition-mode .monitor-workspace {
+  position:relative; display:block; height:var(--monitor-height, 540px); min-height:300px; min-width:0;
+  isolation:isolate;
+}
+.acquisition-mode .monitor-workspace.monitor-focused {
+  position:fixed; inset:8px; z-index:60; height:calc(100dvh - 16px); padding:10px;
+  background:#f4f7ef; border:1px solid #cbdac4; border-radius:10px; box-shadow:0 0 0 20px #13271dd9;
+}
+.acquisition-mode .monitor-workspace .display-workspace { display:flex; flex-direction:column; height:100%; min-height:0; }
+.acquisition-mode .monitor-workspace .display-toolbar { flex-shrink:0; gap:6px 12px; min-height:36px; margin:0 0 8px; }
+.acquisition-mode .monitor-workspace .display-toolbar-title,.acquisition-mode .monitor-workspace .display-toolbar-actions { gap:7px; flex-wrap:wrap; }
+.acquisition-mode .monitor-workspace .display-toolbar h2 { font-size:13px; }
+.acquisition-mode .monitor-workspace .catalog-toggle { display:inline-flex; align-items:center; }
+.acquisition-mode .monitor-workspace .catalog-close { display:grid; }
+.acquisition-mode .monitor-workspace .sensor-catalog { display:none; }
+.acquisition-mode .monitor-workspace .sensor-catalog.catalog-open {
+  position:absolute; display:flex; inset:0 auto 0 0; z-index:25; width:min(300px,100%); max-height:none;
+  margin:0; padding:14px 12px; box-shadow:10px 0 35px #1d342632; border-radius:9px;
+}
+.acquisition-mode .monitor-workspace .catalog-backdrop { display:block; position:absolute; inset:0; z-index:24; border:0; border-radius:9px; background:#18332155; }
+/* Keep every card overlay inside a lower stacking context while the catalog is open. */
+.acquisition-mode .monitor-workspace.catalog-is-open>.display-workspace { position:relative; z-index:0; isolation:isolate; }
+.acquisition-mode .monitor-workspace .workspace-card-grid,
+.acquisition-mode .monitor-workspace .workspace-card-grid.single-card,
+.acquisition-mode .monitor-workspace .workspace-card-grid.layout-stack {
+  flex:1; display:grid; grid-template-columns:repeat(var(--monitor-columns,2),minmax(0,1fr));
+  grid-template-rows:repeat(var(--monitor-rows,1),minmax(0,1fr)); align-items:stretch; gap:10px; min-height:0; height:0;
+}
+.acquisition-mode .monitor-workspace .workspace-sensor-card,
+.acquisition-mode .monitor-workspace .workspace-sensor-card.card-expanded {
+  position:relative; grid-column:auto; height:100%; min-height:0; overflow:hidden;
+}
+.acquisition-mode .monitor-workspace .workspace-sensor-card[hidden],
+.acquisition-mode .monitor-workspace .workspace-config-panel[hidden] { display:none !important; }
+.acquisition-mode .monitor-workspace .workspace-card-heading { flex-shrink:0; min-height:48px; padding:6px 8px; gap:6px; }
+.acquisition-mode .monitor-workspace .workspace-card-heading>.catalog-item-icon { width:27px; height:28px; flex-basis:27px; }
+.acquisition-mode .monitor-workspace .workspace-card-title h3 { font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.acquisition-mode .monitor-workspace .workspace-card-title p { margin:2px 0 0; gap:3px 6px; font-size:10px; white-space:nowrap; }
+.acquisition-mode .monitor-workspace .workspace-card-heading>.icon-button { width:28px; height:30px; flex-shrink:0; }
+.workspace-card-heading>.workspace-disconnect { flex-shrink:0; white-space:nowrap; }
+.acquisition-mode .monitor-workspace .workspace-card-heading>.workspace-disconnect {
+  min-height:30px; padding:4px 8px; gap:5px; font-size:11px; border-color:#cbd9ca; color:#365c4b;
+}
+.workspace-card-heading>.workspace-disconnect:not(:disabled):hover { background:#f8ede5; border-color:#d6b49d; color:#8b482c; }
+.workspace-card-heading>.workspace-disconnect:focus-visible { outline:2px solid #287859; outline-offset:2px; }
+.acquisition-mode .monitor-workspace .workspace-card-index { display:none; }
+.acquisition-mode .monitor-workspace .workspace-source-tag { padding:0 4px; font-size:9px; }
+.acquisition-mode .monitor-workspace .workspace-settings-toggle[aria-expanded="true"] { background:#e7f0dc; color:#376b42; }
+.acquisition-mode .monitor-workspace .workspace-config-panel {
+  position:absolute; top:48px; left:0; right:0; z-index:8; max-height:calc(100% - 48px); overflow:auto;
+  background:#fcfdf9; border-bottom:1px solid #b8cdb0; box-shadow:0 10px 18px #1c35252b; scrollbar-width:thin;
+}
+.acquisition-mode .monitor-workspace .workspace-connection { padding:10px; gap:8px; }
+.acquisition-mode .monitor-workspace .workspace-connection>label { min-width:70px; }
+.acquisition-mode .monitor-workspace .workspace-connection input,
+.acquisition-mode .monitor-workspace .workspace-connection select { height:34px; font-size:12px; }
+.acquisition-mode .monitor-workspace .workspace-card-error {
+  display:flex; align-items:flex-start; gap:6px; flex-shrink:0; max-height:45%; overflow:auto;
+  margin:0; padding:8px 9px; font-size:12px; line-height:1.6; color:#943b30; background:#fff0e9;
+}
+.acquisition-mode .monitor-workspace .workspace-card-error>svg { flex-shrink:0; margin-top:2px; }
+.acquisition-mode .monitor-workspace .workspace-card-error>span { min-width:0; overflow-wrap:anywhere; }
+.acquisition-mode .monitor-workspace .workspace-config-panel>.workspace-card-error { max-height:none; overflow:visible; }
+.acquisition-mode .monitor-workspace .workspace-error-status { color:#a13930; font-weight:600; }
+.acquisition-mode .monitor-workspace .status-dot.connection-error { background:#bc493e; box-shadow:0 0 0 2px #bc493e1a; }
+.serial-port-ownership { padding:8px 10px; border-bottom:1px solid #e0e6d9; background:#f8faf5; font-size:12px; line-height:1.6; }
+.serial-owner-toolbar,.serial-owner-name { display:flex; align-items:center; flex-wrap:wrap; gap:5px 8px; }
+.serial-owner-toolbar>.mono { color:#647260; font-size:11px; }
+.serial-port-ownership .button { min-height:32px; height:auto; white-space:normal; text-align:left; }
+.serial-owner-note,.serial-owner-executable { margin:5px 0; color:#647260; overflow-wrap:anywhere; }
+.serial-owner-executable { font-size:10px; }
+.serial-owner-list { list-style:none; padding:0; margin:6px 0 0; }
+.serial-owner-list>li { padding:9px 0; border-top:1px solid #dde5d6; }
+.serial-owner-name>strong { overflow-wrap:anywhere; min-width:0; }
+.serial-owner-name>span { padding:1px 5px; color:#69775f; background:#eaf0e3; border-radius:3px; font-size:10px; }
+.serial-owner-error,.serial-owner-success { padding:7px 9px; margin:7px 0 0; border-radius:4px; overflow-wrap:anywhere; }
+.serial-owner-error { color:#963a30; background:#fff0e9; }
+.serial-owner-success { color:#386c40; background:#eaf5e5; }
+.serial-owner-confirm { padding:8px; margin-top:7px; border:1px solid #e1b8a9; border-radius:5px; background:#fff5ef; }
+.serial-owner-confirm>p { margin:0 0 7px; color:#853b2e; overflow-wrap:anywhere; }
+.serial-owner-confirm>div { display:flex; gap:6px; flex-wrap:wrap; }
+.serial-port-ownership .serial-owner-confirm-release { background:#98452f; border-color:#98452f; color:white; }
+.acquisition-mode .monitor-workspace .workspace-view-tabs { flex-shrink:0; min-height:29px; padding:2px 7px; gap:3px; }
+.acquisition-mode .monitor-workspace .workspace-view-tabs>button { min-height:25px; padding:3px 6px; }
+.acquisition-mode .monitor-workspace .workspace-view-tabs>span { font-size:9px; }
+.acquisition-mode .monitor-workspace .workspace-visual { display:flex; flex:1; min-height:0; height:0; overflow:hidden; }
+.acquisition-mode .monitor-workspace .workspace-preview,
+.acquisition-mode .monitor-workspace .workspace-camera-preview,
+.acquisition-mode .monitor-workspace .workspace-microphone-preview { display:flex; flex-direction:column; flex:1; min-height:0; width:100%; height:100%; }
+.acquisition-mode .monitor-workspace .workspace-preview .preview-canvas-wrap,
+.acquisition-mode .monitor-workspace .workspace-preview .preview-canvas-wrap.pressure-regions,
+.acquisition-mode .monitor-workspace .workspace-camera-stage,
+.acquisition-mode .monitor-workspace .workspace-microphone-stage { flex:1; min-height:0; height:0; width:100%; overflow:hidden; }
+.acquisition-mode .monitor-workspace .workspace-preview .preview-canvas-wrap>canvas,
+.acquisition-mode .monitor-workspace .workspace-preview .preview-canvas-wrap.pressure-regions canvas { width:100%; height:100%; min-height:0; }
+.acquisition-mode .monitor-workspace .workspace-camera-stage video { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; }
+.acquisition-mode .monitor-workspace .pressure-display-toolbar { flex-shrink:0; min-height:31px; padding:3px 8px; gap:4px; }
+.acquisition-mode .monitor-workspace .pressure-display-toolbar>span { font-size:10px; margin-right:3px; }
+.acquisition-mode .monitor-workspace .pressure-display-toolbar button { min-height:25px; padding:3px 9px; font-size:11px; }
+.acquisition-mode .monitor-workspace .preview-footer,
+.acquisition-mode .monitor-workspace .workspace-camera-footer { flex-shrink:0; min-height:25px; padding:4px 8px; font-size:10px; line-height:1.5; gap:3px 7px; }
+.acquisition-mode .monitor-workspace .workspace-sdk-footer { flex-shrink:0; min-height:21px; padding:3px 8px; font-size:9px; gap:3px 6px; }
+.acquisition-mode .monitor-workspace .numeric-pressure-view { min-height:0; }
+.acquisition-mode .monitor-workspace .numeric-toolbar { flex-shrink:0; padding:3px 6px; gap:3px; }
+.acquisition-mode .monitor-workspace .numeric-toolbar button { min-height:25px; min-width:25px; padding:3px 5px; }
+.acquisition-mode .monitor-workspace .numeric-view-hint { display:none; }
+.acquisition-mode .monitor-workspace .numeric-zoom-controls { margin-left:auto; gap:3px; }
+.acquisition-mode .monitor-workspace .numeric-readout { min-height:24px; padding:4px 6px; font-size:9px; }
+.acquisition-mode .monitor-workspace .numeric-keyboard-hint { display:none; }
+.acquisition-mode .monitor-workspace .workspace-card-placeholder { flex:1; width:100%; min-height:0; height:100%; gap:5px; padding:12px; overflow:auto; }
+.acquisition-mode .monitor-workspace .workspace-card-placeholder h4 { font-size:12px; }
+.acquisition-mode .monitor-workspace .workspace-card-placeholder p { line-height:1.6; }
+.acquisition-mode .monitor-workspace .workspace-empty { flex:1; min-height:0; padding:18px; }
+.acquisition-mode .monitor-workspace .workspace-empty-path { margin-top:3px; }
+.monitor-pagination { display:flex; flex-wrap:wrap; flex-shrink:0; align-items:center; justify-content:space-between; min-height:30px; gap:4px 7px; color:#62745a; font-size:11px; }
+.monitor-pagination>div { display:flex; align-items:center; gap:8px; }
+.monitor-pagination .icon-button { width:28px; height:28px; }
+.monitor-pagination .button { min-height:27px; padding:4px 8px; font-size:11px; }
+.monitor-pagination .monitor-hidden-issue { color:#a74638; border-color:#dfc4b8; background:#fff6ef; }
+.monitor-page-note { color:#88937f; font-size:10px; }
+.monitor-recording-state { display:inline-flex; align-items:center; gap:5px; color:#718267; font-size:11px; }
+.monitor-recording-state.is-recording { color:#b1463d; font-weight:600; }
+.monitor-recording-state.is-recording::before { content:""; width:7px; height:7px; border-radius:50%; background:#d65c4a; }
+.acquisition-mode .monitor-workspace .workspace-service-message { flex-shrink:0; max-height:45px; overflow:auto; margin:4px 0 0; padding:4px 8px; font-size:11px; }
+.workspace-microphone-device { flex:1 1 180px; }
+.workspace-microphone-guide,.workspace-microphone-format { margin:0; padding:7px 10px; color:#53684b; font-size:11px; line-height:1.6; background:#f7faf3; }
+.workspace-microphone-format { padding-top:0; color:#6b795f; border-bottom:1px solid #e1e8da; }
+.workspace-microphone-stage { position:relative; background:#f5f8f2; }
+.workspace-microphone-stage canvas { display:block; width:100%; height:100%; }
+.workspace-microphone-badge { position:absolute; top:8px; left:9px; display:flex; align-items:center; gap:6px; padding:4px 7px; border:1px solid #dce7d4; border-radius:4px; background:#f7faf1ed; color:#47683b; font-size:10px; }
+.workspace-microphone-badge.is-interrupted { color:#984236; border-color:#e5c5b9; background:#fff3ed; }
+.workspace-microphone-paused { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:8px; padding:15px; color:#4d6447; background:#f4f8eec9; font-size:12px; text-align:center; }
+.workspace-microphone-level { display:flex; align-items:center; flex-shrink:0; gap:8px; min-height:26px; padding:4px 9px; color:#64725d; border-top:1px solid #e1e8db; font-size:10px; }
+.workspace-microphone-level>.mono { min-width:76px; text-align:right; }
+.workspace-microphone-meter { flex:1; min-width:20px; height:6px; overflow:hidden; border-radius:3px; background:#e6ecdf; }
+.workspace-microphone-meter>span { display:block; height:100%; width:100%; background:#43885f; transform:scaleX(0); transform-origin:left center; }
+.workspace-microphone-notice { display:flex; align-items:flex-start; flex-shrink:0; gap:6px; padding:7px 9px; color:#6d5424; background:#fff8e8; border-top:1px solid #eadfbe; font-size:12px; line-height:1.5; overflow-wrap:anywhere; }
+.workspace-microphone-notice>svg { flex-shrink:0; margin-top:2px; }
+.workspace-microphone-notice.is-interrupted { color:#984236; border-color:#e5c5b9; background:#fff3ed; }
+.workspace-microphone-footer { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:3px 7px; flex-shrink:0; padding:4px 9px; border-top:1px solid #e7ece2; color:#617259; background:#fbfcf9; font-size:10px; line-height:1.5; }
+.workspace-microphone-footer>span:first-child { flex:1 1 90px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+@media(min-width:900px) and (min-height:600px) {
+  .capture-page.acquisition-mode .capture-display-column>.monitor-workspace:not(.monitor-focused) {
+    flex:1 1 0; height:auto; min-height:0;
+  }
+}
+@media(max-width:640px) {
+  .acquisition-mode .monitor-workspace .display-toolbar h2,.acquisition-mode .monitor-workspace .display-refresh { display:none; }
+  .acquisition-mode .monitor-workspace .display-toolbar { gap:5px; }
+  .acquisition-mode .monitor-workspace .display-toolbar-actions { margin-left:auto; }
+  .acquisition-mode .monitor-workspace .display-layout-buttons { display:none; }
+  .acquisition-mode .monitor-workspace .display-toolbar .button { min-height:32px; padding:5px 8px; font-size:11px; }
+  .acquisition-mode .monitor-workspace .display-count { font-size:10px; }
+  .acquisition-mode .monitor-workspace .monitor-focus-toggle { min-width:32px; }
+  .acquisition-mode .monitor-workspace .monitor-focus-toggle>span { display:none; }
+  .monitor-page-note { display:none; }
+  .acquisition-mode .monitor-workspace.monitor-focused { inset:4px; height:calc(100dvh - 8px); padding:7px; }
+}

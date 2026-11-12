@@ -1,0 +1,80 @@
+/* Media keep a permanent parent across sensor pages and focused views. */
+.media-sensor-layout { display:grid; flex:1; min-width:0; min-height:0; height:0; gap:10px; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr); }
+.media-sensor-layout.has-media-rail.has-sensor-grid { gap:0; grid-template-columns:var(--media-rail-width,38%) 12px minmax(0,1fr); }
+.media-sensor-layout.media-is-focused,.media-sensor-layout.sensor-is-focused { grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr); }
+.media-sensor-layout>[hidden],.media-rail>[hidden] { display:none !important; }
+.media-rail { display:flex; flex-direction:column; min-width:0; min-height:0; gap:8px; overflow:auto; overscroll-behavior:contain; scrollbar-width:thin; }
+.acquisition-mode .monitor-workspace .media-sensor-layout>.workspace-card-grid,
+.replay-workspace .media-sensor-layout>.replay-stream-grid { min-width:0; min-height:0; height:100%; }
+.acquisition-mode .monitor-workspace .media-rail>.workspace-sensor-card,
+.replay-workspace .media-rail>.replay-stream-card { position:relative; display:flex; flex-direction:column; min-width:0; height:auto; flex:0 0 var(--media-camera-height,180px); min-height:160px; }
+.acquisition-mode .monitor-workspace .media-rail>.media-audio-card,
+.replay-workspace .media-rail>.replay-audio-card { flex:0 0 var(--media-audio-height,150px); min-height:128px; }
+.replay-workspace .media-rail>.replay-stream-card { container:replay-card / size; }
+.acquisition-mode .monitor-workspace .media-rail>.workspace-sensor-card.configuration-open { flex-basis:310px; min-height:310px; }
+.acquisition-mode .monitor-workspace .media-is-focused>.media-rail>.workspace-sensor-card,
+.replay-workspace .media-is-focused>.media-rail>.replay-stream-card { flex:1 1 0; min-height:0; }
+.acquisition-mode .monitor-workspace .media-rail .workspace-card-heading { position:relative; inset:auto; min-height:40px; padding:4px 7px; gap:5px; border-bottom:1px solid #e1e8dc; background:#fbfcf8; }
+.acquisition-mode .monitor-workspace .media-rail .workspace-card-title.workspace-card-compact { border:0; padding:0; background:transparent; }
+.acquisition-mode .monitor-workspace .media-rail .workspace-card-label { max-width:none; }
+.acquisition-mode .monitor-workspace .media-rail .workspace-visual { position:relative; inset:auto; display:flex; flex:1; height:0; min-height:0; width:100%; }
+.acquisition-mode .monitor-workspace .media-rail .workspace-camera-preview,
+.acquisition-mode .monitor-workspace .media-rail .workspace-microphone-preview { display:flex; flex-direction:column; flex:1; width:100%; height:100%; min-height:0; }
+.acquisition-mode .monitor-workspace .media-rail .workspace-camera-stage,
+.acquisition-mode .monitor-workspace .media-rail .workspace-microphone-stage { position:relative; inset:auto; flex:1; width:100%; height:0; min-height:0; border-radius:0; }
+.acquisition-mode .monitor-workspace .media-rail .workspace-camera-stage { background:#101a16; }
+.acquisition-mode .monitor-workspace .media-rail .workspace-camera-footer,
+.acquisition-mode .monitor-workspace .media-rail .workspace-microphone-footer,
+.acquisition-mode .monitor-workspace .media-rail .workspace-microphone-level { position:static; inset:auto; flex-shrink:0; min-height:21px; padding:3px 7px; border-radius:0; font-size:10px; }
+.acquisition-mode .monitor-workspace .media-rail .workspace-camera-footer { flex-wrap:wrap; }
+.acquisition-mode .monitor-workspace .media-rail .workspace-microphone-footer { flex-wrap:nowrap; }
+.acquisition-mode .monitor-workspace .media-rail .workspace-microphone-footer>.mono { flex-shrink:0; font-size:9px; }
+.acquisition-mode .monitor-workspace .media-rail .workspace-microphone-badge { top:3px; left:5px; padding:2px 5px; font-size:9px; }
+.acquisition-mode .monitor-workspace .media-rail .workspace-microphone-notice { bottom:43px; left:5px; right:5px; max-height:70px; font-size:11px; padding:5px 7px; }
+.acquisition-mode .monitor-workspace .media-rail .workspace-config-panel { top:43px; left:5px; right:5px; max-width:none; max-height:calc(100% - 48px); }
+.acquisition-mode .monitor-workspace .media-rail .workspace-card-placeholder { padding:12px; }
+.replay-workspace .media-rail .replay-audio-content { gap:5px; padding:6px 8px; align-content:start; }
+.replay-workspace .media-rail .replay-audio-label { font-size:11px; }
+.replay-workspace .media-rail .replay-audio-label>svg { width:20px; height:20px; }
+.replay-workspace .media-rail .replay-audio-content>audio { height:32px; }
+.replay-workspace .media-rail .replay-stream-note { min-height:18px; padding:2px 7px; font-size:9px; }
+/* Use measured board width, not window width: side panels can narrow the board. */
+
+  .media-sensor-layout.media-stacked.has-media-rail.has-sensor-grid { gap:10px; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,.56fr) minmax(0,.44fr); }
+  .media-sensor-layout.media-stacked.media-is-focused,.media-sensor-layout.media-stacked.sensor-is-focused { grid-template-rows:minmax(0,1fr); }
+  .acquisition-mode .monitor-workspace .media-stacked>.media-rail>.configuration-open { flex-basis:310px; min-height:310px; }
+  .acquisition-mode .monitor-workspace .media-stacked.media-is-focused>.media-rail>.workspace-sensor-card,
+  .replay-workspace .media-stacked.media-is-focused>.media-rail>.replay-stream-card { flex-basis:0; min-height:0; }
+
+.media-resize-handle { position:relative; flex-shrink:0; touch-action:none; user-select:none; outline-offset:-2px; border-radius:5px; }
+.media-resize-handle::after { content:""; position:absolute; background:#b8cbbd; border-radius:3px; }
+.media-resize-width { width:12px; height:100%; cursor:col-resize; }
+.media-resize-width::after { top:calc(50% - 26px); left:4px; width:4px; height:52px; }
+.media-resize-height { height:12px; min-height:12px; width:100%; cursor:row-resize; }
+.media-resize-height::after { left:calc(50% - 26px); top:4px; width:52px; height:4px; }
+.media-resize-handle:hover,.media-resize-handle:focus-visible { background:#dfebe1; }
+.media-resize-handle:focus-visible { outline:2px solid #187c60; }
+.media-resize-handle:hover::after,.media-resize-handle:focus-visible::after { background:#187c60; }
+.media-resize-handle[aria-disabled="true"] { cursor:default; }
+.media-resize-handle[aria-disabled="true"]::after { background:#d9e2d7; }
+.media-layout-controls { position:relative; flex-shrink:0; }
+.media-layout-controls>summary { list-style:none; cursor:pointer; min-height:32px; }
+.media-layout-controls>summary::-webkit-details-marker { display:none; }
+.media-layout-controls>summary:focus-visible { outline:2px solid #187c60; outline-offset:2px; }
+.media-layout-popover { position:absolute; z-index:90; top:calc(100% + 7px); right:0; width:min(300px,calc(100vw - 32px)); padding:16px; border:1px solid #ccdaca; border-radius:10px; background:#fff; box-shadow:0 10px 30px #193b2429; }
+.media-layout-popover>label { display:flex; justify-content:space-between; gap:12px; align-items:center; color:#254a38; font-size:13px; font-weight:600; }
+.media-layout-popover output { font-variant-numeric:tabular-nums; font-weight:500; }
+.media-layout-popover>input[type="range"] { display:block; width:100%; min-height:32px; margin:4px 0 8px; padding:0; accent-color:#187c60; cursor:pointer; }
+.media-layout-popover>input[type="range"]:disabled { cursor:default; }
+.media-layout-popover>p { color:#6a7e6a; font-size:12px; line-height:1.5; margin:0 0 12px; }
+.media-layout-popover>p.media-layout-saved { margin:10px 0 0; }
+.media-layout-popover>.button { min-height:32px; }
+.media-card-resize-footer { display:flex; flex:0 0 28px; min-height:28px; justify-content:flex-end; align-items:stretch; border-top:1px solid #dce7db; background:#f4f8f1; }
+.media-card-resize-grip { display:flex; align-items:center; justify-content:flex-end; gap:7px; min-width:112px; padding:3px 8px 3px 12px; border-left:1px solid #d0dfcd; border-top-left-radius:8px; background:#e9f2e4; color:#286546; font-size:11px; font-weight:600; line-height:20px; cursor:nwse-resize; user-select:none; touch-action:none; }
+.media-card-resize-grip:hover,.media-card-resize-grip:focus-visible { background:#d9ead3; color:#155137; }
+.media-card-resize-grip:focus-visible { outline:2px solid #187c60; outline-offset:-3px; }
+.media-card-resize-grip[aria-disabled="true"] { cursor:default; color:#778b77; background:#f0f4ec; }
+.acquisition-mode .monitor-workspace .media-rail>.media-camera-card .workspace-config-panel { max-height:calc(100% - 76px); }
+@media (max-width:520px) {
+  .media-layout-popover { position:fixed; top:112px; left:50%; right:auto; transform:translateX(-50%); max-height:calc(100dvh - 128px); overflow:auto; }
+}

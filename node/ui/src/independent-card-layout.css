@@ -1,0 +1,109 @@
+/* Each card owns its pixel dimensions. The two stable parents only arrange and
+   scroll cards; changing size never moves a media element to another parent. */
+.media-sensor-layout.independent-card-layout {
+  display:grid; flex:1 1 0; min-width:0; min-height:0; height:0;
+  grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr);
+  gap:10px; align-items:stretch; overflow:hidden;
+}
+.media-sensor-layout.independent-card-layout.has-media-rail.has-sensor-grid {
+  grid-template-columns:var(--independent-media-width,38%) minmax(0,1fr); gap:10px;
+}
+.media-sensor-layout.independent-card-layout>.media-resize-handle { display:none; }
+.media-sensor-layout.independent-card-layout>.media-rail {
+  display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start;
+  gap:10px; min-width:0; min-height:0; height:100%; overflow:auto;
+  scrollbar-gutter:stable; overscroll-behavior:contain; scrollbar-width:thin;
+}
+.acquisition-mode .monitor-workspace .media-sensor-layout.independent-card-layout>.workspace-card-grid,
+.replay-workspace .media-sensor-layout.independent-card-layout>.replay-stream-grid {
+  display:flex; flex:0 1 auto; flex-flow:row wrap; align-content:flex-start; align-items:flex-start;
+  justify-content:flex-start; gap:10px; min-width:0; min-height:0; height:100%;
+  grid-template-columns:none; grid-template-rows:none; overflow:auto;
+  scrollbar-gutter:stable; overscroll-behavior:contain; scrollbar-width:thin;
+}
+/* The list-layout toggle still means one vertical column, even when saved
+   independent widths would otherwise allow two cards to fit side by side. */
+.acquisition-mode .monitor-workspace .media-sensor-layout.independent-card-layout>.workspace-card-grid.layout-stack {
+  flex-flow:column nowrap;
+}
+
+/* Inline width/height win over the old grid fill rules. In particular an open
+   settings panel must not reinstate the former 310px media-card minimum. */
+.acquisition-mode .monitor-workspace .media-sensor-layout.independent-card-layout .workspace-sensor-card.independent-card,
+.replay-workspace .media-sensor-layout.independent-card-layout .replay-stream-card.independent-card {
+  position:relative; display:flex; flex-direction:column; flex:0 0 auto;
+  align-self:flex-start; box-sizing:border-box; min-width:0; min-height:0;
+  max-width:100%; max-height:none; height:auto; grid-area:auto;
+  contain:none; container-type:inline-size; overflow:hidden;
+}
+/* Replay's short-card queries hide secondary notes. Explicit inline dimensions
+   make size containment safe without letting grid/flex choose the card size. */
+.replay-workspace .media-sensor-layout.independent-card-layout .replay-stream-card.independent-card {
+  container:replay-card / size;
+}
+
+/* Compact acquisition sensors use an absolute visual. Keep it clear of the
+   30px size footer and the separate 10px right/bottom resize gutters. */
+.acquisition-mode .monitor-workspace .independent-card-layout>.workspace-card-grid>.independent-card .workspace-visual {
+  inset:0 10px 40px 0; width:auto; height:auto; min-height:0;
+}
+.acquisition-mode .monitor-workspace .independent-card-layout>.workspace-card-grid>.independent-card .workspace-card-heading {
+  right:18px;
+}
+.acquisition-mode .monitor-workspace .independent-card-layout>.workspace-card-grid>.independent-card .card-size-footer {
+  position:absolute; z-index:20; inset:auto 10px 10px 0; width:auto; height:30px;
+}
+.acquisition-mode .monitor-workspace .independent-card-layout .independent-card .workspace-config-panel {
+  right:18px; max-height:calc(100% - 96px); overflow:auto; overscroll-behavior:contain;
+}
+.acquisition-mode .monitor-workspace .independent-card-layout>.media-rail>.independent-card .workspace-config-panel {
+  right:15px; max-height:calc(100% - 88px);
+}
+.acquisition-mode .monitor-workspace .independent-card-layout>.workspace-card-grid>.independent-card>.workspace-card-error {
+  right:18px; max-height:calc(100% - 152px);
+}
+
+/* Narrow boards retain the same parents and scroll in one vertical column. The
+   measured media-stacked class is used instead of the browser window width. */
+.media-sensor-layout.independent-card-layout.media-stacked,
+.media-sensor-layout.independent-card-layout.media-stacked.has-media-rail.has-sensor-grid {
+  grid-template-columns:minmax(0,1fr); grid-template-rows:max-content max-content;
+  align-content:start; overflow:auto; scrollbar-gutter:stable;
+}
+.media-sensor-layout.independent-card-layout.media-stacked>.media-rail,
+.acquisition-mode .monitor-workspace .media-sensor-layout.independent-card-layout.media-stacked>.workspace-card-grid,
+.replay-workspace .media-sensor-layout.independent-card-layout.media-stacked>.replay-stream-grid {
+  height:auto; overflow:visible; scrollbar-gutter:auto;
+}
+
+/* Focus fills the available pane using the dimensions supplied by the hook.
+   The saved independent dimensions are restored when focus ends. */
+.media-sensor-layout.independent-card-layout.media-is-focused,
+.media-sensor-layout.independent-card-layout.sensor-is-focused,
+.media-sensor-layout.independent-card-layout.has-media-rail.has-sensor-grid:is(.media-is-focused,.sensor-is-focused),
+.media-sensor-layout.independent-card-layout.media-stacked.has-media-rail.has-sensor-grid:is(.media-is-focused,.sensor-is-focused) {
+  grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr);
+  align-content:stretch; overflow:hidden;
+}
+.media-sensor-layout.independent-card-layout:is(.media-is-focused,.sensor-is-focused)>.media-rail,
+.acquisition-mode .monitor-workspace .media-sensor-layout.independent-card-layout:is(.media-is-focused,.sensor-is-focused)>.workspace-card-grid,
+.replay-workspace .media-sensor-layout.independent-card-layout:is(.media-is-focused,.sensor-is-focused)>.replay-stream-grid {
+  height:100%; overflow:auto; scrollbar-gutter:stable;
+}
+.media-sensor-layout.independent-card-layout:is(.media-is-focused,.sensor-is-focused) .independent-card {
+  padding-right:0; padding-bottom:0;
+}
+.acquisition-mode .monitor-workspace .independent-card-layout.sensor-is-focused>.workspace-card-grid>.independent-card .workspace-visual {
+  inset:0; width:auto; height:auto;
+}
+.acquisition-mode .monitor-workspace .independent-card-layout.sensor-is-focused>.workspace-card-grid>.independent-card .workspace-card-heading,
+.acquisition-mode .monitor-workspace .independent-card-layout.sensor-is-focused .independent-card .workspace-config-panel,
+.acquisition-mode .monitor-workspace .independent-card-layout.sensor-is-focused>.workspace-card-grid>.independent-card>.workspace-card-error {
+  right:8px;
+}
+.acquisition-mode .monitor-workspace .independent-card-layout.sensor-is-focused .independent-card .workspace-config-panel {
+  max-height:calc(100% - 56px);
+}
+.acquisition-mode .monitor-workspace .independent-card-layout.media-is-focused>.media-rail>.independent-card .workspace-config-panel {
+  right:5px; max-height:calc(100% - 48px);
+}

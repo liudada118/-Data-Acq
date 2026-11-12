@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "builtin-2026-10-20",
+  "providers": [
+    {
+      "id": "deepseek",
+      "label": "DeepSeek 官方 API",
+      "baseUrl": "https://api.deepseek.com",
+      "defaultModel": "deepseek-flash",
+      "hint": "图片任务请选择 DeepSeek Flash；V4 Pro 官方暂不支持图片输入。",
+      "models": [
+        { "id": "deepseek-flash", "label": "DeepSeek Flash" },
+        { "id": "deepseek-v4-pro", "label": "DeepSeek V4 Pro" }
+      ]
+    },
+    {
+      "id": "openai",
+      "label": "OpenAI 官方 API",
+      "baseUrl": "https://api.openai.com/v1",
+      "defaultModel": "gpt-5-mini",
+      "models": [
+        { "id": "gpt-5-mini", "label": "GPT-5 mini" },
+        { "id": "gpt-5.4-mini", "label": "GPT-5.4 mini" },
+        { "id": "gpt-5.4", "label": "GPT-5.4" },
+        { "id": "gpt-4.1-mini", "label": "GPT-4.1 mini" }
+      ]
+    },
+    {
+      "id": "custom",
+      "label": "自定义地址／中转站",
+      "baseUrl": "",
+      "defaultModel": "gpt-6-astra",
+      "models": [
+        { "id": "gpt-6-astra", "label": "ChatGPT-6-Astra" },
+        { "id": "gpt-5.6-sol", "label": "ChatGPT-5.6-Sol" },
+        { "id": "gpt-5.6-terra", "label": "ChatGPT-5.6-Terra" },
+        { "id": "gpt-5.5", "label": "ChatGPT-5.5" },
+        { "id": "gpt-5.5-openai-compact", "label": "ChatGPT-5.5-OpenAI-Compact" },
+        { "id": "gpt-5-mini", "label": "GPT-5 mini" },
+        { "id": "gpt-5.4-mini", "label": "GPT-5.4 mini" },
+        { "id": "gpt-5.4", "label": "GPT-5.4" },
+        { "id": "gpt-4.1-mini", "label": "GPT-4.1 mini" },
+        { "id": "deepseek-flash", "label": "DeepSeek Flash" },
+        { "id": "deepseek-v4-pro", "label": "DeepSeek V4 Pro" }
+      ]
+    }
+  ]
+}

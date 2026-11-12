@@ -1,0 +1,10 @@
+node_modules/
+ui/node_modules/
+ui/dist/
+ui/*.tsbuildinfo
+data/
+.runtime/
+.env
+.env.local
+vendor/
+release/

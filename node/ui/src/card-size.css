@@ -1,0 +1,28 @@
+/* These gutters belong to card chrome, leaving device settings and media controls clear. */
+.independent-size-card { position:relative; box-sizing:border-box; flex:none; padding-right:10px; padding-bottom:10px; }
+.card-size-controls { display:contents; }
+.card-size-footer { display:flex; flex:0 0 30px; min-height:30px; align-items:center; gap:6px; padding-left:7px; border-top:1px solid #d5e2d3; background:#f2f7ed; color:#436447; }
+.card-size-value { margin-right:auto; font-size:10px; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.card-size-value>span { font-size:9px; }
+.card-size-reset,.card-size-fill-height { display:inline-flex; flex-shrink:0; align-items:center; justify-content:center; gap:3px; min-width:28px; height:25px; padding:2px 4px; border:1px solid #d1dfcc; border-radius:5px; background:#fff; color:#456344; font-size:10px; cursor:pointer; }
+.card-size-fill-height[aria-pressed="true"] { background:#e0eed8; border-color:#9cbd8d; color:#246143; }
+.card-size-reset:disabled { opacity:.45; cursor:default; }
+.card-resize-right,.card-resize-bottom,.card-resize-corner { touch-action:none; user-select:none; }
+.card-resize-right,.card-resize-bottom { position:absolute; z-index:5; background:#e1ebdb; }
+.card-resize-right { top:0; bottom:0; right:0; width:10px; cursor:ew-resize; }
+.card-resize-bottom { bottom:0; left:0; right:10px; height:10px; cursor:ns-resize; }
+.card-resize-right::after,.card-resize-bottom::after { content:""; position:absolute; background:#729a75; border-radius:2px; }
+.card-resize-right::after { width:3px; height:36px; left:3px; top:calc(50% - 18px); }
+.card-resize-bottom::after { height:3px; width:36px; top:3px; left:calc(50% - 18px); }
+.card-resize-corner { display:flex; flex-shrink:0; align-items:center; justify-content:flex-end; gap:4px; min-height:30px; padding:3px 5px 3px 8px; background:#deecd5; color:#2d6544; border-left:1px solid #c5d9bf; font-size:10px; font-weight:600; cursor:nwse-resize; }
+.card-resize-right:hover,.card-resize-bottom:hover,.card-resize-corner:hover { background:#ccdfc4; }
+.card-resize-right:focus-visible,.card-resize-bottom:focus-visible,.card-resize-corner:focus-visible,.card-size-reset:focus-visible,.card-size-fill-height:focus-visible { outline:2px solid #197b5b; outline-offset:-2px; }
+.independent-size-card .card-size-footer { position:relative; inset:auto; width:auto; }
+@container (max-width:350px) {
+  .card-size-footer { gap:3px; padding-left:4px; }
+  .card-size-reset>span,.card-resize-corner>span { display:none; }
+}
+@container (max-width:245px) {
+  .card-size-value>span { display:none; }
+  .card-size-fill-height { padding:2px; gap:2px; font-size:9px; }
+}

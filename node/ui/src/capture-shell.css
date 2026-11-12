@@ -1,0 +1,47 @@
+/* The capture screen reserves the available viewport for the sensor monitor. */
+.capture-page .page-content { width:100%; max-width:none; }
+.capture-page .topbar { height:40px; flex-shrink:0; }
+.capture-page .session-control { min-height:64px; padding:7px 11px; margin-bottom:7px; }
+.capture-page .workflow-toolbar { gap:7px; margin:0 0 7px; min-height:32px; }
+.capture-page .workflow-toolbar .button { min-height:30px; }
+.capture-page .capture-workflow-layout { flex:1; min-height:0; align-items:stretch; }
+.capture-page .capture-display-column { display:flex; flex-direction:column; min-height:0; }
+.capture-page .capture-label-timeline { flex-shrink:0; margin-top:5px; }
+.capture-page .capture-label-timeline>div { padding:4px 9px; }
+.capture-page .acquisition-statusbar { min-height:29px; margin-top:5px; padding:4px 10px; gap:7px 15px; flex-shrink:0; }
+.capture-page .event-log { flex-shrink:0; margin-top:4px; }
+.capture-page .event-log-heading { min-height:26px; padding:4px 10px; }
+.capture-page .event-log:not(.expanded) .log-lines { display:none; }
+.capture-page .event-log.expanded .log-lines { max-height:100px; overflow:auto; }
+.capture-page .alert { flex-shrink:0; margin-bottom:7px; max-height:88px; overflow:auto; }
+.capture-page .capture-annotation-column { position:absolute; top:0; right:0; bottom:0; z-index:42; width:min(320px,100%); filter:drop-shadow(0 7px 20px #203a2a25); }
+.capture-page .capture-annotation-column .annotation-panel { max-height:100%; }
+.capture-page .capture-workflow-layout.with-annotations { grid-template-columns:minmax(0,1fr); }
+@media(min-width:900px) and (min-height:600px) {
+  .capture-page { height:100dvh; min-height:0; overflow:hidden; }
+  .capture-page .main-shell { display:flex; flex-direction:column; height:100dvh; min-height:0; }
+  .capture-page .page-content { display:flex; flex-direction:column; flex:1; min-height:0; padding:8px 12px 7px; overflow:hidden; }
+  .capture-page .page-heading,.capture-page .page-footer { display:none; }
+  .capture-page .session-control { flex-shrink:0; }
+}
+@media(max-width:640px) {
+  .capture-page .session-control { gap:8px; }
+  .capture-page .workflow-toolbar { gap:5px; }
+  .capture-page .workflow-context-summary { display:none; }
+  .capture-page .workflow-toolbar .button { font-size:11px; }
+}
+
+/* Replay uses the same viewport budget as acquisition; only its side panel
+   scrolls, while transport controls and the current grid page stay reachable. */
+.app-shell.replay-mode { height:100dvh; min-height:0; overflow:hidden; }
+.replay-mode .main-shell { display:flex; flex-direction:column; height:100dvh; min-height:0; }
+.replay-mode .topbar { height:40px; min-height:40px; flex-shrink:0; }
+.replay-mode .page-content {
+  display:flex; flex-direction:column; flex:1; min-height:0; min-width:0;
+  width:100%; max-width:none; padding:8px 12px; overflow:hidden;
+}
+.replay-mode .page-heading,.replay-mode .page-footer { display:none; }
+.replay-mode .page-content>.alert { flex-shrink:0; max-height:64px; overflow:auto; margin-bottom:7px; }
+@media(max-width:640px) {
+  .replay-mode .page-content { padding:6px 8px; }
+}

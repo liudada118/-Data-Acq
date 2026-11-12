@@ -1,0 +1,81 @@
+/* Every camera feed owns its canvas and label; changing the preview never
+   changes the plugin connection or the streams selected for recording. */
+.workspace-camera-layout {
+  display:flex; flex-direction:column; flex:1; width:100%; height:100%;
+  min-width:0; min-height:0; padding:6px; overflow:hidden;
+}
+.workspace-camera-layout-toolbar {
+  display:flex; align-items:center; flex:0 0 auto; min-width:0; gap:6px;
+  padding:0 0 5px; color:#71836b; font-size:11px;
+}
+.workspace-camera-layout-options { display:flex; align-items:center; flex-shrink:0; gap:2px; }
+.workspace-camera-layout-toolbar button {
+  display:inline-flex; align-items:center; justify-content:center; gap:4px;
+  min-width:0; min-height:26px; height:26px; padding:3px 6px;
+  border:1px solid transparent; border-radius:4px; background:transparent;
+  color:#62765a; font:inherit; line-height:18px; white-space:nowrap; cursor:pointer;
+}
+.workspace-camera-layout-toolbar button:hover { border-color:#c6d6bd; background:#f0f5eb; }
+.workspace-camera-layout-toolbar button[aria-pressed="true"] { border-color:#c6d6bd; background:#e8f0df; color:#305a3f; }
+.workspace-camera-layout-toolbar button:focus-visible { outline:2px solid #168065; outline-offset:1px; }
+.workspace-camera-layout-hint { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.workspace-camera-layout-toolbar .workspace-camera-split-reset { flex-shrink:0; margin-left:auto; }
+.workspace-camera-feeds {
+  display:grid; grid-template-columns:minmax(0,1fr); grid-auto-rows:minmax(0,1fr);
+  flex:1; width:100%; height:0; min-width:0; min-height:0; gap:8px;
+}
+.workspace-camera-feeds.camera-feeds-multiple { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.workspace-camera-feeds.camera-feeds-pair { gap:0; }
+.workspace-camera-splitter {
+  display:flex; align-items:center; justify-content:center; min-width:0; min-height:0;
+  touch-action:none; user-select:none; border-radius:4px; position:relative;
+  background:#edf3e7; outline-offset:-2px;
+}
+.camera-feeds-horizontal>.workspace-camera-splitter { cursor:col-resize; border-inline:2px solid #f7faf4; }
+.camera-feeds-vertical>.workspace-camera-splitter { cursor:row-resize; border-block:2px solid #f7faf4; }
+.workspace-camera-splitter>span { display:block; border-radius:3px; background:#8ca584; pointer-events:none; }
+.camera-feeds-horizontal>.workspace-camera-splitter>span { width:3px; height:32px; max-height:60%; }
+.camera-feeds-vertical>.workspace-camera-splitter>span { height:3px; width:40px; max-width:60%; }
+.workspace-camera-splitter:hover,.workspace-camera-splitter:focus-visible,.camera-layout-dragging .workspace-camera-splitter { background:#dce9d4; outline:2px solid #168065; }
+.camera-layout-dragging,.camera-layout-dragging * { user-select:none; }
+.camera-layout-dragging .workspace-camera-feed { pointer-events:none; }
+.workspace-camera-feed {
+  display:flex; flex-direction:column; min-width:0; min-height:0; overflow:hidden;
+  border:1px solid #d7e1d2; border-radius:6px; background:#f5f7f1;
+}
+.workspace-camera-feed-name { flex-shrink:0; margin:0; padding:5px 8px; color:#375649; font-size:12px; line-height:20px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.workspace-camera-feed-placeholder { display:flex; flex:1; min-height:0; align-items:center; justify-content:center; flex-direction:column; gap:8px; color:#7a8e73; font-size:12px; }
+/* Reserve real layout space for plugin tabs instead of placing them underneath
+   the absolute fullscreen visual. Resize gutters/footer keep their own space. */
+.acquisition-mode .monitor-workspace.card-content-workspace .media-sensor-layout .workspace-card-grid>.workspace-plugin-stream-card {
+  display:flex; flex-direction:column; padding-top:48px; padding-bottom:40px; container-type:size;
+}
+.acquisition-mode .monitor-workspace.card-content-workspace .media-sensor-layout .workspace-card-grid>.workspace-plugin-stream-card.card-expanded { padding-bottom:0; }
+.acquisition-mode .monitor-workspace.card-content-workspace .media-sensor-layout .workspace-card-grid>.workspace-plugin-stream-card>.workspace-visual {
+  position:relative; inset:auto; width:100%; height:0; flex:1; min-height:0;
+}
+.acquisition-mode .monitor-workspace .workspace-plugin-stream-card>.workspace-view-tabs { position:relative; z-index:17; background:#f7faf4; }
+.acquisition-mode .monitor-workspace .workspace-camera-feed>.workspace-preview {
+  position:relative; display:flex; flex-direction:column; flex:1; min-width:0; min-height:0; height:0; border-radius:0;
+}
+.acquisition-mode .monitor-workspace .workspace-camera-feed .preview-canvas-wrap {
+  position:relative; inset:auto; flex:1; width:100%; min-height:0; height:0; margin:0; border-radius:0;
+}
+.acquisition-mode .monitor-workspace .workspace-camera-feed .preview-footer {
+  position:relative; inset:auto; width:100%; height:auto; flex-shrink:0; min-height:25px; padding:4px 6px; border-radius:0;
+}
+@container (max-width:620px) {
+  .workspace-plugin-stream-card>.workspace-view-tabs>span { display:none; }
+}
+@container (max-width:620px) and (min-height:360px) {
+  .workspace-camera-feeds.camera-feeds-multiple:not(.camera-feeds-pair) { grid-template-columns:minmax(0,1fr); }
+}
+@container (max-width:420px) {
+  .workspace-camera-layout-hint { display:none; }
+  .workspace-camera-layout-toolbar { gap:3px; }
+  .workspace-camera-layout-toolbar button { padding-inline:4px; }
+}
+@container (max-width:300px) {
+  .workspace-camera-split-reset>span { display:none; }
+  .workspace-camera-feed-name { padding:3px 5px; font-size:11px; }
+}

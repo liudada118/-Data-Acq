@@ -1,0 +1,76 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import os from 'node:os';
+import path from 'node:path';
+import { mkdtemp, mkdir, writeFile } from 'node:fs/promises';
+import { setTimeout as delay } from 'node:timers/promises';
+import { createApplication } from '../src/server.mjs';
+
+test('HTTP: isolated Node recording, export, downloads, validation and restart', { timeout: 30000 }, async t => {
+  const root = await mkdtemp(path.join(os.tmpdir(), 'synapse-node-http-'));
+  const options = { port: 0, sdkPath: false, dataDir: path.join(root, 'sessions'), outputDir: path.join(root, 'exports'), webDir: path.join(root, 'web') };
+  await mkdir(options.webDir); await writeFile(path.join(options.webDir, 'index.html'), '<h1>Node acquisition</h1>');
+  let app = await createApplication(options);
+  t.after(async () => { await app.close(); });
+  const get = endpoint => fetch(app.url + endpoint);
+  const post = (endpoint, value, headers = {}) => fetch(app.url + endpoint, {
+    method: 'POST', headers: { 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(value),
+  });
+  assert.equal((await (await get('/api/health')).json()).service, 'synapse-node');
+  assert.equal((await (await get('/api/sdk/info')).json()).loaded, false);
+  assert.equal((await post('/api/sdk/connect', { product: 'mock' })).status, 503);
+  assert.equal((await get('/')).status, 200);
+  assert.equal((await get('/devices')).status, 200);
+  assert.equal((await get('/missing.js')).status, 404);
+  assert.equal((await get('/api/unknown')).status, 404);
+  assert.equal((await fetch(app.url + '/api/status', { headers: { Origin: 'https://example.invalid' } })).status, 403);
+  assert.equal((await post('/api/sessions/start', { name: 'forbidden', device_ids: ['sim-imu'] }, { Origin: 'https://example.invalid' })).status, 403);
+  assert.equal((await post('/api/sessions/start', null)).status, 400);
+  assert.equal((await post('/api/sessions/start', { device_ids: [] })).status, 400);
+  assert.equal((await post('/api/sessions/start', { device_ids: ['unknown'] })).status, 400);
+  const ids = (await (await get('/api/devices')).json()).devices.map(device => device.id);
+  assert.equal(ids.length, 4);
+  const response = await post('/api/sessions/start', { name: 'Node 四路链路验证', device_ids: ids, profile: 'test' });
+  assert.equal(response.status, 201);
+  const { session_id: id } = await response.json();
+  assert.equal((await post('/api/sessions/start', { name: 'duplicate', device_ids: ids })).status, 409);
+  await delay(350);
+  const preview = await (await get('/api/preview')).json();
+  assert.equal(preview.status.session_id, id);
+  assert.equal(preview.streams['sim-pressure'].pressure.values.length, 256);
+  assert.equal(Buffer.from(preview.streams['sim-camera'].camera.rgb_base64, 'base64').length, 160 * 90 * 3);
+  assert.equal((await get(`/api/files/${id}/manifest.json`)).status, 409);
+  const stopped = await (await post('/api/sessions/stop', {})).json();
+  assert.equal(stopped.session.finalized, true);
+  assert.equal(stopped.session.status, 'complete');
+  assert.equal(stopped.status.session_id, null);
+  assert.equal(stopped.session.dropped_records, 0);
+  assert.ok(stopped.session.record_count > 10);
+  assert.deepEqual(await (await get(`/api/sessions/${id}`)).json(), stopped.session);
+  assert.equal((await (await get('/api/sessions')).json()).sessions.length, 1);
+  const stream = stopped.session.streams[0];
+  const binary = Buffer.from(await (await get(`/api/files/${id}/${stream.file}`)).arrayBuffer());
+  assert.equal(binary.subarray(0, 8).toString(), 'MDAQBIN1');
+  assert.equal((await get(`/api/files/${id}/not-a-session-file.txt`)).status, 404);
+  assert.equal((await get('/api/sessions/notfound')).status, 404);
+  assert.equal((await post('/api/export/jobs', { session_id: id, format: 'mp4' })).status, 400);
+  const accepted = await post('/api/export/jobs', { session_id: id, format: 'csv' });
+  assert.equal(accepted.status, 202);
+  const job = await accepted.json();
+  let completed;
+  for (let attempt = 0; attempt < 100; attempt++) {
+    completed = await (await get(`/api/export/jobs/${job.id}`)).json();
+    if (['complete', 'error'].includes(completed.status)) break;
+    await delay(50);
+  }
+  assert.equal(completed.status, 'complete', completed.error);
+  const download = await get(completed.download_url);
+  assert.equal(download.status, 200);
+  assert.match(download.headers.get('content-disposition'), /attachment/);
+  assert.equal(Buffer.from(await download.arrayBuffer()).readUInt32LE(0), 0x04034b50);
+  await app.close();
+  app = await createApplication(options);
+  assert.equal((await (await get('/api/sessions')).json()).sessions[0].id, id);
+  assert.equal((await (await get(`/api/export/jobs/${job.id}`)).json()).status, 'complete');
+  assert.equal((await get(completed.download_url)).status, 200);
+});

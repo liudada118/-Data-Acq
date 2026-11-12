@@ -1,0 +1,162 @@
+/* The card background fills its tile. Data is fitted inside an unobstructed area. */
+.preview-display-settings { display:contents; }
+.preview-display-settings[hidden] { display:none !important; }
+
+.acquisition-mode .card-content-workspace .workspace-sensor-card,
+.acquisition-mode .card-content-workspace .workspace-sensor-card.card-expanded {
+  position:relative; display:block; min-width:0; overflow:hidden; container-type:inline-size;
+}
+.acquisition-mode .card-content-workspace .workspace-card-heading {
+  position:absolute; top:8px; left:8px; right:8px; z-index:16; min-height:32px;
+  display:flex; align-items:center; gap:6px; padding:0; border:0; border-radius:0;
+  background:transparent; box-shadow:none; backdrop-filter:none;
+}
+.acquisition-mode .card-content-workspace .workspace-card-heading>.catalog-item-icon,
+.acquisition-mode .card-content-workspace .workspace-card-index { display:none; }
+.acquisition-mode .card-content-workspace .workspace-card-title.workspace-card-compact {
+  display:flex; align-items:center; flex:0 1 auto; gap:7px; min-width:0; max-width:calc(100% - 104px);
+  padding:5px 8px; border:1px solid #d6e0d0; border-radius:7px; background:#fbfdf5ed;
+}
+.acquisition-mode .card-content-workspace .workspace-card-label {
+  min-width:0; margin:0; max-width:170px; font-size:12px; line-height:20px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.workspace-card-side { flex-shrink:0; color:#19765c; font-size:12px; font-weight:600; white-space:nowrap; }
+.acquisition-mode .card-content-workspace .workspace-card-title .workspace-card-state {
+  display:flex; flex-shrink:0; align-items:center; gap:4px; margin:0; font-size:10px; line-height:20px; white-space:nowrap;
+}
+.acquisition-mode .card-content-workspace .workspace-source-tag { display:none; }
+.acquisition-mode .card-content-workspace .workspace-settings-toggle {
+  flex-shrink:0; margin-left:auto; min-height:32px; padding:5px 8px; gap:5px;
+  font-size:11px; white-space:nowrap; border:1px solid #d2dfcb; border-radius:7px; background:#fbfdf5f2;
+}
+.acquisition-mode .card-content-workspace .workspace-card-heading>.icon-button {
+  flex-shrink:0; width:32px; height:32px; border-radius:7px; background:#fbfdf5f2;
+}
+.acquisition-mode .card-content-workspace .workspace-config-panel {
+  position:absolute; z-index:27; top:48px; left:8px; right:8px; max-width:450px;
+  max-height:calc(100% - 56px); overflow:auto; padding:0; border:1px solid #bdcdb5;
+  border-radius:9px; background:#fcfdf9fa; box-shadow:0 10px 30px #243b2929;
+}
+.acquisition-mode .card-content-workspace .workspace-device-actions {
+  display:flex; align-items:center; flex-wrap:wrap; gap:6px; padding:9px 10px; border-bottom:1px solid #e0e8da;
+}
+.acquisition-mode .card-content-workspace .workspace-device-actions>.button { min-height:32px; font-size:11px; }
+.acquisition-mode .card-content-workspace .workspace-config-panel .workspace-view-tabs { flex-wrap:wrap; padding:7px 10px; }
+.acquisition-mode .card-content-workspace .workspace-config-panel .workspace-sdk-footer { position:static; padding:7px 10px; background:transparent; }
+.workspace-display-settings-slot:empty { display:none; }
+.workspace-display-settings-slot { padding:9px 10px; border-top:1px solid #e0e8da; }
+.workspace-display-settings-slot .preview-display-settings.preview-settings-embedded {
+  position:static; display:flex; flex-direction:column; gap:9px; width:auto; max-width:100%; max-height:none;
+  margin:0; padding:0; overflow:visible; border:0; border-radius:0; background:transparent; box-shadow:none;
+}
+.workspace-display-settings-slot .pressure-display-toolbar {
+  display:flex; flex-wrap:wrap; min-height:30px; gap:5px; margin:0; padding:0; border:0; background:transparent;
+}
+.workspace-display-settings-slot .pressure-range-controls { margin-left:0; flex-wrap:wrap; }
+.workspace-display-settings-slot .pressure-data-summary { margin:0; color:#63765a; font-size:11px; line-height:1.5; }
+.workspace-display-settings-slot .numeric-toolbar {
+  position:static; display:flex; align-items:center; flex-wrap:wrap; gap:6px; width:100%; max-width:100%;
+  min-height:32px; margin:0; padding:7px; border:1px solid #2b4058; border-radius:6px; background:#101e35;
+}
+.workspace-display-settings-slot .numeric-view-hint { display:none; }
+.workspace-display-settings-slot .numeric-zoom-controls { margin-left:auto; flex-wrap:wrap; }
+
+.acquisition-mode .card-content-workspace .workspace-visual {
+  position:absolute; inset:0; display:flex; width:100%; height:100%; min-height:0; overflow:hidden;
+}
+.acquisition-mode .card-content-workspace .workspace-preview,
+.acquisition-mode .card-content-workspace .workspace-camera-preview,
+.acquisition-mode .card-content-workspace .workspace-microphone-preview {
+  position:relative; display:block; width:100%; height:100%; min-height:0; border:0; border-radius:0; background:#f3f5ef;
+}
+.acquisition-mode .card-content-workspace .workspace-preview:has(.numeric-pressure-view) { background:#09152c; }
+.acquisition-mode .card-content-workspace .workspace-preview>.preview-heading { display:none; }
+/* These insets protect actual samples; overlays are never drawn over the fitted data. */
+.acquisition-mode .card-content-workspace .workspace-preview .preview-canvas-wrap,
+.acquisition-mode .card-content-workspace .workspace-preview .preview-canvas-wrap.pressure-regions {
+  position:absolute; top:48px; right:8px; bottom:88px; left:8px;
+  width:auto; height:auto; min-height:0; border-radius:4px; overflow:hidden;
+}
+.acquisition-mode .card-content-workspace .workspace-preview:has(.numeric-pressure-view) .preview-canvas-wrap { bottom:64px; }
+.acquisition-mode .card-content-workspace .workspace-preview.preview-summary-merged .preview-canvas-wrap { bottom:62px; }
+.acquisition-mode .card-content-workspace .workspace-preview.preview-summary-merged:has(.numeric-pressure-view) .preview-canvas-wrap { bottom:38px; }
+.acquisition-mode .card-content-workspace .workspace-preview .preview-canvas-wrap>canvas,
+.acquisition-mode .card-content-workspace .workspace-preview .preview-canvas-wrap.pressure-regions canvas {
+  display:block; width:100%; height:100%; min-height:0;
+}
+.acquisition-mode .card-content-workspace .workspace-preview .preview-canvas-wrap>canvas[style*="display: none"] { display:none; }
+.acquisition-mode .card-content-workspace .numeric-pressure-view {
+  position:absolute; inset:0; display:flex; flex-direction:column; width:100%; height:100%; min-height:0;
+}
+.acquisition-mode .card-content-workspace .numeric-canvas-area { position:relative; flex:1; min-height:0; width:100%; }
+.acquisition-mode .card-content-workspace .pressure-color-scale {
+  position:absolute; z-index:8; bottom:60px; left:8px; max-width:calc(100% - 16px); width:max-content;
+  display:flex; flex-wrap:nowrap; min-height:22px; height:22px; margin:0; padding:3px 6px;
+  border:0; border-radius:6px; background:#fbfdf5e6; pointer-events:none; font-size:10px; line-height:16px;
+}
+.acquisition-mode .card-content-workspace .pressure-color-scale .pressure-range-help { display:none; }
+.acquisition-mode .card-content-workspace .preview-summary-merged .pressure-color-scale { bottom:34px; }
+.acquisition-mode .card-content-workspace .pressure-color-gradient { flex:0 0 42px; width:42px; }
+.acquisition-mode .card-content-workspace .pressure-color-scale>span:not(.pressure-color-gradient) {
+  min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.acquisition-mode .card-content-workspace .pressure-range-warning {
+  position:absolute; z-index:12; top:48px; right:8px; left:8px; max-height:48px;
+  overflow:auto; padding:6px 8px; border-radius:6px;
+}
+.acquisition-mode .card-content-workspace .workspace-preview:has(.pressure-range-warning) .preview-canvas-wrap { top:104px; }
+.acquisition-mode .card-content-workspace .preview-footer {
+  position:absolute; z-index:8; left:8px; right:8px; bottom:34px; width:auto; height:22px;
+  display:flex; flex-wrap:nowrap; min-height:22px; margin:0; padding:3px 6px; border:0;
+  border-radius:6px; background:#fbfdf5e6; font-size:10px; line-height:16px;
+}
+.acquisition-mode .card-content-workspace .preview-footer>span { min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.acquisition-mode .card-content-workspace .sdk-receive-health {
+  position:absolute; z-index:10; bottom:8px; left:8px; right:8px; width:auto;
+  display:flex; flex-wrap:nowrap; min-height:22px; height:22px; margin:0; padding:3px 6px; gap:4px 8px;
+  border:0; border-radius:6px; background:#fbfdf5e6; font-size:10px; line-height:16px; overflow:hidden;
+}
+.acquisition-mode .card-content-workspace .sdk-receive-health[data-health="interrupted"],
+.acquisition-mode .card-content-workspace .sdk-receive-health[data-health="error"] { background:#fff0e9f5; box-shadow:0 0 0 1px #d88c73; }
+.acquisition-mode .card-content-workspace .sdk-health-preview-summary { flex:0 0 auto; margin-left:auto; white-space:nowrap; }
+.acquisition-mode .card-content-workspace .sdk-health-preview-summary:empty { display:none; }
+@container (max-width:620px) {
+  .card-content-workspace .sdk-receive-health:has(.preview-pressure-peak) .sdk-health-age { display:none; }
+}
+@container (max-width:360px) {
+  .card-content-workspace .sdk-receive-health:has(.preview-pressure-peak) .sdk-health-rate { display:none; }
+  .card-content-workspace .sdk-receive-health:has(.preview-pressure-peak) .sdk-health-state { min-width:0; overflow:hidden; text-overflow:ellipsis; }
+}
+.acquisition-mode .card-content-workspace .workspace-camera-stage,
+.acquisition-mode .card-content-workspace .workspace-microphone-stage {
+  position:absolute; top:48px; right:8px; bottom:64px; left:8px; width:auto; height:auto; min-height:0; border-radius:4px;
+}
+.acquisition-mode .card-content-workspace .workspace-camera-footer,
+.acquisition-mode .card-content-workspace .workspace-microphone-footer {
+  position:absolute; z-index:9; bottom:8px; left:8px; right:8px; padding:4px 6px;
+  border:0; border-radius:6px; background:#fbfdf5e6;
+}
+.acquisition-mode .card-content-workspace .workspace-camera-badge,
+.acquisition-mode .card-content-workspace .workspace-microphone-badge { top:8px; left:8px; }
+.acquisition-mode .card-content-workspace .workspace-microphone-level {
+  position:absolute; z-index:9; bottom:34px; left:8px; right:8px; border:0; border-radius:6px; background:#fbfdf5e6;
+}
+.acquisition-mode .card-content-workspace .workspace-microphone-notice {
+  position:absolute; z-index:15; bottom:62px; left:8px; right:8px; max-height:40%; overflow:auto; border-radius:7px;
+}
+.acquisition-mode .card-content-workspace .workspace-sensor-card>.workspace-card-error {
+  position:absolute; z-index:19; top:48px; left:8px; right:8px; max-height:calc(100% - 112px);
+  border:1px solid #e4b09b; border-radius:7px;
+}
+.acquisition-mode .card-content-workspace .workspace-card-placeholder { padding:56px 16px 40px; }
+@container (max-width:420px) {
+  .card-content-workspace .sdk-health-age { display:none; }
+  .card-content-workspace .workspace-card-title .workspace-card-state>span:not(.status-dot) { display:none; }
+}
+@media(max-width:640px) {
+  .acquisition-mode .card-content-workspace .workspace-card-label { font-size:11px; }
+  .acquisition-mode .card-content-workspace .workspace-settings-toggle { padding:5px 6px; }
+  .acquisition-mode .card-content-workspace .sdk-health-age { display:none; }
+  .acquisition-mode .card-content-workspace .workspace-card-placeholder { padding-left:12px; padding-right:12px; }
+}
